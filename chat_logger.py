@@ -18,7 +18,7 @@ port = 6667
 nickname = 'TwitchStreamer'
 token = 'oauth:gibberish'
 channels = ['#channel1','#channel2']
-
+linelength = 32
 
 def main():
     sock = socket.socket()
@@ -39,8 +39,10 @@ def main():
                     channel = resp[resp.find('#'):resp.find(' ', resp.find('#'))]
                     chatname = resp[1:resp.find('!')]
                     chattext = demojize(resp[resp.find(':', 1) + 1:resp.find('\n')])
-                    output = Template('$who in $where: $what').substitute(where=channel, who=chatname, what=chattext)
-                    logging.info(textwrap.fill(output, 40))
+                    output = Template('$who in $where:').substitute(where=channel, who=chatname)
+                    logging.info(output)
+                    output = Template('$what').substitute(what=chattext)
+                    logging.info(textwrap.fill(output, linelength))
 
     except KeyboardInterrupt:
         sock.close()
