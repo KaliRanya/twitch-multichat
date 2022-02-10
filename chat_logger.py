@@ -1,5 +1,6 @@
 import socket
 import logging
+import textwrap
 from emoji import demojize
 from string import Template
 
@@ -39,7 +40,7 @@ def main():
                     chatname = resp[1:resp.find('!')]
                     chattext = demojize(resp[resp.find(':', 1) + 1:resp.find('\n')])
                     output = Template('$who in $where: $what').substitute(where=channel, who=chatname, what=chattext)
-                    logging.info(output)
+                    logging.info(textwrap.fill(output, 40))
 
     except KeyboardInterrupt:
         sock.close()
